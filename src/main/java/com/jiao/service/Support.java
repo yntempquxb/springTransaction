@@ -48,5 +48,17 @@ public class Support {
 
     }
 
-
+    @Transactional(noRollbackFor = IllegalArgumentException.class)
+    //指定不会滚的异常
+    public void save5(Person person) {
+        try {
+            Person p = personRepository.save(person);
+            if (person.getName().equals("jiao")) {
+                System.out.println(person.getName());
+            }
+            System.out.println(p);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("jiao已存在，但数据不会回滚");
+        }
+    }
 }

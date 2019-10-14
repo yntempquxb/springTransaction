@@ -12,4 +12,5 @@ public interface DemoService {
     public Person savePersonWithoutRollBack2(Person person);
     public Person savePersonWithoutRollBack3(Person person);
     public Person savePersonWithoutRollBack4(Person person);
+    public Person savePersonWithoutRollBack5(Person person);
 }

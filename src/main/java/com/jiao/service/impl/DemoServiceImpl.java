@@ -111,6 +111,39 @@ public class DemoServiceImpl implements DemoService {
     }
 
     /**
+     * 需求person存库，person1不影响主流程。
+     * 实现方式，把support.save5弄成一个原子事务，里面自己处理，指定不回滚，不影响主流程
+     * @param person
+     * @return
+     */
+    @Transactional
+    @Override
+    public Person savePersonWithoutRollBack5(Person person) {
+        /**
+         * 主流程
+         */
+        Person p = personRepository.save(person);
+
+        Person person1 = new Person();
+        person1.setName("jiao");
+        person1.setAddress("11111111");
+        person1.setAge(19);
+
+        //person存库了。里面的person1也存库了。事务部回滚。
+        try {
+            /**
+             * 辅流程
+             */
+            //把有影响的弄成一个个事务原子处理了。
+            support.save5(person1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return person1;
+    }
+
+    /**
      * 查看exception类图
      * https://blog.csdn.net/Cary_1029/article/details/84945166
      *
